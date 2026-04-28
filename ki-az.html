@@ -14,35 +14,40 @@ body {
   height: 100vh;
 }
 
-/* 📌 szöveg bal felső – KÉP FELETT */
-.text {
-  position: absolute;
-  top: -30px; /* kép fölé tolja */
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
-
-/* 🖼 kép középen */
-.center-img {
+/* 📦 középre igazítás */
+.container {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+
+/* 🖼 kép 500px */
+img {
   width: 500px;
+  display: block;
   cursor: pointer;
-  z-index: 1; /* a szöveg alatt */
+}
+
+/* 📌 szöveg a kép fölött */
+.text {
+  margin-bottom: 10px; /* távolság a képtől */
 }
 </style>
 </head>
 
 <body>
 
-<!-- 📌 szöveg (kép fölött lesz) -->
-<div class="text">ez vagyok én</div>
+<div class="container">
 
-<!-- 🖼 kép -->
-<img id="kep" class="center-img" src="en.JPG">
+  <!-- 📌 szöveg -->
+  <div class="text">ez vagyok én</div>
+
+  <!-- 🖼 kép -->
+  <img id="kep" src="en.JPG">
+
+</div>
 
 <!-- 🎵 zene -->
 <audio id="zene" src="zene.mp3"></audio>
