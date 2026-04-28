@@ -16,25 +16,34 @@ body, html {
   z-index: -1;
 }
 
-/* Menü (bal oldalt, függőlegesen középen) */
+/* Menü konténer */
 .menu {
   position: fixed;
-  left: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
+  width: 100%;
+  height: 100%;
 }
 
-/* Menü elemek */
+/* Közös stílus */
 .menu a {
+  position: absolute;
   color: #de3333;
   font-family: Impact, sans-serif;
-  font-size: 60px; /* 3x nagyobb */
+  font-size: 60px;
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s ease;
+}
+
+/* "mi ez?" – bal felső */
+.menu a:first-child {
+  top: 40px;
+  left: 40px;
+}
+
+/* "ki az?" – jobb alsó */
+.menu a:last-child {
+  bottom: 40px;
+  right: 40px;
 }
 
 /* Hover effekt */
