@@ -1,42 +1,50 @@
+/* Alap reset */
 body, html {
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
-/* 🎥 VIDEÓ */
+/* Háttér videó */
 #bg-video {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -2;
+  z-index: -1;
 }
 
-/* 🔘 LINKEK */
-a {
-  position: absolute;
-  font-family: Impact;
-  font-size: 50px;
+/* Menü (bal oldalt, függőlegesen középen) */
+.menu {
+  position: fixed;
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+/* Menü elemek */
+.menu a {
   color: #de3333;
+  font-family: Impact, sans-serif;
+  font-size: 60px; /* 3x nagyobb */
   text-decoration: none;
-  z-index: 10;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.top-left {
-  top: 30px;
-  left: 30px;
+/* Hover effekt */
+.menu a:hover {
+  transform: scale(1.1);
 }
 
-.bottom-right {
-  bottom: 30px;
-  right: 30px;
-}
-
-/* 🎮 3D */
+/* 3D canvas */
 #modelCanvas {
   position: fixed;
   top: 0;
   left: 0;
-  pointer-events: none;
 }
