@@ -11,15 +11,22 @@ body {
   font-family: Consolas;
   font-size: 20px;
   color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  flex-direction: column;
 }
 
-/* kép középen */
-img {
+/* 📌 szöveg bal felső */
+.text {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+/* 🖼 kép középen */
+.center-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 300px;
   cursor: pointer;
 }
@@ -28,10 +35,11 @@ img {
 
 <body>
 
-<p>ez vagyok én</p>
+<!-- 📌 szöveg -->
+<div class="text">ez vagyok én</div>
 
 <!-- 🖼 kép -->
-<img id="kep" src="en.JPG">
+<img id="kep" class="center-img" src="en.JPG">
 
 <!-- 🎵 zene -->
 <audio id="zene" src="zene.mp3"></audio>
