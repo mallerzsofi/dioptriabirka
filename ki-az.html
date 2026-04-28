@@ -14,11 +14,12 @@ body {
   height: 100vh;
 }
 
-/* 📌 szöveg bal felső */
+/* 📌 szöveg bal felső – KÉP FELETT */
 .text {
   position: absolute;
   top: 20px;
   left: 20px;
+  z-index: 2; /* fontos */
 }
 
 /* 🖼 kép középen */
@@ -27,15 +28,16 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
+  width: 150px;
   cursor: pointer;
+  z-index: 1; /* a szöveg alatt */
 }
 </style>
 </head>
 
 <body>
 
-<!-- 📌 szöveg -->
+<!-- 📌 szöveg (kép fölött lesz) -->
 <div class="text">ez vagyok én</div>
 
 <!-- 🖼 kép -->
