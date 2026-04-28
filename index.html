@@ -2,23 +2,34 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
-  <title>Főoldal</title>
+  <title>dioptriabirka</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+<!-- 🎥 HÁTTÉR VIDEÓ -->
 <video autoplay muted loop id="bg-video">
   <source src="kenyér.MOV" type="video/mp4">
 </video>
 
+<!-- 📌 MENÜ -->
 <div class="menu">
   <a href="mi-ez.html">mi ez?</a>
   <a href="ki-az.html">ki az?</a>
 </div>
 
+<!-- 🎮 3D CANVAS -->
 <canvas id="modelCanvas"></canvas>
 
+<!-- ⚡ THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- 📦 OBJ LOADER (EZ HIÁNYZOTT NÁLAD) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/OBJLoader.js"></script>
+
+<!-- 🧠 SAJÁT SCRIPT -->
 <script src="script.js"></script>
 
 </body>
