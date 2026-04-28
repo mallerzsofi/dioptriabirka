@@ -2,13 +2,26 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>ki az</title>
+<title>ki az?</title>
+
 <style>
 body {
+  margin: 0;
   background: white;
   font-family: Consolas;
-  font-size: 12px;
+  font-size: 20px;
   color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+/* kép középen */
+img {
+  width: 300px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -16,6 +29,30 @@ body {
 <body>
 
 <p>ez vagyok én</p>
+
+<!-- 🖼 kép -->
+<img id="kep" src="assets/en.JPG">
+
+<!-- 🎵 zene -->
+<audio id="zene" src="assets/zene.mp3"></audio>
+
+<script>
+const kep = document.getElementById("kep");
+const zene = document.getElementById("zene");
+
+let playing = false;
+
+kep.addEventListener("click", () => {
+
+  if (!playing) {
+    zene.play();
+    playing = true;
+  } else {
+    window.location.href = "index.html";
+  }
+
+});
+</script>
 
 </body>
 </html>
