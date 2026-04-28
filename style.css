@@ -1,11 +1,11 @@
-/* Alap reset */
+/* RESET */
 body, html {
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
-/* Háttér videó */
+/* 🎥 HÁTTÉR VIDEÓ */
 #bg-video {
   position: fixed;
   top: 0;
@@ -13,17 +13,18 @@ body, html {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
 }
 
-/* Menü konténer */
+/* 📌 MENÜ KONTÉNER */
 .menu {
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: 10;
 }
 
-/* Közös stílus */
+/* 🔘 LINKEK ALAP STÍLUS */
 .menu a {
   position: absolute;
   color: #de3333;
@@ -34,26 +35,30 @@ body, html {
   transition: transform 0.2s ease;
 }
 
-/* "mi ez?" – bal felső */
+/* 📍 "mi ez?" → BAL FELSŐ */
 .menu a:first-child {
   top: 40px;
   left: 40px;
 }
 
-/* "ki az?" – jobb alsó */
+/* 📍 "ki az?" → JOBB ALSÓ */
 .menu a:last-child {
   bottom: 40px;
   right: 40px;
 }
 
-/* Hover effekt */
+/* ✨ HOVER */
 .menu a:hover {
   transform: scale(1.1);
 }
 
-/* 3D canvas */
+/* 🎮 3D CANVAS */
 #modelCanvas {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
+
+  /* FONTOS: ne blokkolja a kattintást */
+  pointer-events: none;
 }
