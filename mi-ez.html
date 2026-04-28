@@ -2,22 +2,30 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>mi ez</title>
-<link rel="stylesheet" href="style.css">
+<title>mi ez?</title>
 
 <style>
 body {
+  margin: 0;
   background: white;
   font-family: Consolas;
-  font-size: 12px;
+  font-size: 20px;
   color: black;
 }
+
+/* szöveg */
+.text {
+  padding: 40px;
+  max-width: 60%;
+}
+
+/* kép jobb oldalt középen */
 img {
   position: absolute;
-  right: 10%;
+  right: 5%;
   top: 50%;
   transform: translateY(-50%);
-  max-width: 300px;
+  width: 300px;
   cursor: pointer;
 }
 </style>
@@ -25,11 +33,12 @@ img {
 
 <body>
 
-<p>
-ez félig az aminek látszik, de amúgy egy olyan oldal, ahol minden az étel körül forog és folyamatosan azon gondolkodom mit fogok enni.
-</p>
+<div class="text">
+ez félig az aminek látszik, de amúgy egy olyan oldal, ahol minden az étel-ennivaló-élelem-eledel-eleség-étek-táplálék-harapnivaló-kaja-élelmiszer-koszt-elemózsia-tápanyag-betevő-manna-fogamravaló-falnivaló körül forog és bemutatásra kerül mennyire nagyon benne van folyamatosan az agyamban az, hogy mikor mit fogok enni és mit kell vennem hozzá, amit majd mikor főzök meg és mennyit kell abból magammal vinnem, hogy ne keljen sok millió magyar forintot költeném.
+</div>
 
-<img src="aha.png" onclick="location.href='index.html'">
+<!-- 🖼 kép vissza a főoldalra -->
+<img src="assets/aha.png" onclick="location.href='index.html'">
 
 </body>
 </html>
