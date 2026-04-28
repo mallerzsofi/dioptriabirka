@@ -1,9 +1,11 @@
+/* Alap reset */
 body, html {
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
 
+/* Háttér videó */
 #bg-video {
   position: fixed;
   top: 0;
@@ -14,24 +16,33 @@ body, html {
   z-index: -1;
 }
 
+/* Menü (bal oldalt, függőlegesen középen) */
 .menu {
   position: fixed;
-  left: 20px;
-  bottom: 50%;
-  transform: translateY(50%);
+  left: 40px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 60px;
 }
 
+/* Menü elemek */
 .menu a {
   color: #de3333;
   font-family: Impact, sans-serif;
-  font-size: 20px;
+  font-size: 60px; /* 3x nagyobb */
   text-decoration: none;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
+/* Hover effekt */
+.menu a:hover {
+  transform: scale(1.1);
+}
+
+/* 3D canvas */
 #modelCanvas {
   position: fixed;
   top: 0;
