@@ -1,11 +1,10 @@
-
-body, html {
+/* alap */
+body {
   margin: 0;
-  padding: 0;
-  overflow: hidden;
+  font-family: Consolas, monospace;
 }
 
-/* 🎥 FULLSCREEN VIDEÓ */
+/* 🎥 háttérvideó */
 #bg-video {
   position: fixed;
   top: 0;
@@ -13,86 +12,33 @@ body, html {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  z-index: -2;
-  pointer-events: none; /* ne blokkoljon kattintást */
-}
-
-/* 🎮 3D CANVAS */
-#modelCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-
   z-index: -1;
-  pointer-events: none; /* ne blokkoljon kattintást */
 }
 
-/* 🔘 ÖSSZES LINK */
-a {
-  position: absolute;
-  font-family: Impact;
-  font-size: 50px;
-  color: #de3333;
+/* 📌 mi ez? (bal felső) */
+.menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
+
+.menu a {
+  color: white;
   text-decoration: none;
-
-  z-index: 9999; /* mindig legfelül */
-  cursor: pointer;
-}
-
-/* 📍 BAL FELSŐ */
-.top-left {
-  top: 30px;
-  left: 30px;
-}
-
-/* 📍 JOBB ALSÓ */
-.bottom-right {
-  bottom: 30px;
-  right: 30px;
-}
-
-/* 📄 MI EZ / KI AZ OLDALAK ALAP */
-body.page {
-  background: white;
-  overflow: auto;
-}
-
-/* 📜 SZÖVEG (mi ez oldal) */
-.text {
-  font-family: Consolas;
-  font-size: 12px;
-  color: black;
-  max-width: 60%;
-  padding: 40px;
-}
-
-/* 🖼 JOBB OLDALI KÉP (mi ez oldal) */
-.image-right {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 300px;
-  cursor: pointer;
-}
-
-/* 🖼 KI AZ KÉP KÖZÉP */
-.center-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  width: 150px;
-  cursor: pointer;
-}
-
-/* 📌 KI AZ SZÖVEG KÉP FELETT */
-.center-text {
-  position: absolute;
-  top: calc(50% - 90px);
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: Consolas;
   font-size: 20px;
+}
+
+/* 📌 ki az? (jobb alsó) */
+.ki-az {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+/* ✨ opcionális hover */
+a:hover {
+  opacity: 0.7;
 }
