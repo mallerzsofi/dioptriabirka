@@ -2,14 +2,24 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>TESZT</title>
+<title>3D</title>
+
 <style>
-body { margin: 0; overflow: hidden; background: white; }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: white;
+}
+canvas {
+  display: block;
+}
 </style>
 </head>
+
 <body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
 
 <script>
 
@@ -30,25 +40,49 @@ document.body.appendChild(renderer.domElement);
 /* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-/* 🔴 TESZT KOCKA */
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(),
-  new THREE.MeshNormalMaterial()
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 5, 5);
+scene.add(light);
+
+/* 📦 OBJ BETÖLTÉS (MTL NÉLKÜL - BIZTOS LÁTHATÓ) */
+const loader = new THREE.OBJLoader();
+
+loader.load(
+  "3DModel.obj",
+
+  function (object) {
+
+    /* 🔥 minden mesh-hez biztos material */
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.material = new THREE.MeshNormalMaterial();
+      }
+    });
+
+    scene.add(object);
+
+    object.position.set(0, 0, 0);
+    object.scale.set(1, 1, 1);
+
+  },
+
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + "% betöltve");
+  },
+
+  function (error) {
+    console.error("OBJ hiba:", error);
+  }
 );
 
-scene.add(cube);
-
+/* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 loop */
+/* 🔄 animáció */
 function animate() {
   requestAnimationFrame(animate);
-
-  cube.rotation.y += 0.01;
-
   renderer.render(scene, camera);
 }
-
 animate();
 
 </script>
