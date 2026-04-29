@@ -37,14 +37,14 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff);
 document.body.appendChild(renderer.domElement);
 
-/* 💡 fény */
+/* 💡 fények */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-/* 📦 OBJ BETÖLTÉS (MTL NÉLKÜL - BIZTOS LÁTHATÓ) */
+/* 📦 OBJ BETÖLTÉS (EGYEDÜL) */
 const loader = new THREE.OBJLoader();
 
 loader.load(
@@ -52,7 +52,7 @@ loader.load(
 
   function (object) {
 
-    /* 🔥 minden mesh-hez biztos material */
+    /* 🔥 biztos láthatóság (anyag fix) */
     object.traverse(function (child) {
       if (child.isMesh) {
         child.material = new THREE.MeshNormalMaterial();
@@ -61,6 +61,7 @@ loader.load(
 
     scene.add(object);
 
+    /* 📍 pozíció + méret */
     object.position.set(0, 0, 0);
     object.scale.set(1, 1, 1);
 
@@ -78,11 +79,12 @@ loader.load(
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 animáció */
+/* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
+
 animate();
 
 </script>
