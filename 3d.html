@@ -7,57 +7,54 @@
 <style>
 body {
   margin: 0;
-  height: 300vh; /* 🔥 scroll hely */
-  overflow-x: hidden;
+  font-family: Arial;
   background: white;
 }
 
-/* 🎥 3D canvas */
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  z-index: 1;
-}
-
-/* 🟤 MENÜ */
+/* 🟤 MENÜ (FIX FELÜL, DE NEM TAKAR SEMMIT) */
 #menu {
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  padding: 15px 0;
+  text-align: center;
 
   font-family: Impact, sans-serif;
   font-size: 40px;
   color: #C1900B;
 
+  background: rgba(255,255,255,0.9); /* 🔥 ne olvadjon bele */
+  
   opacity: 0;
-  transition: 0.5s ease;
+  transform: translateY(-100%);
+  transition: 0.4s ease;
 
   z-index: 9999;
 }
 
-/* ✨ megjelenik scrollra */
+/* ✨ scroll után jön be */
 #menu.show {
   opacity: 1;
+  transform: translateY(0);
 }
 
-/* 🖼️ GALÉRIA */
-#gallery {
-  position: absolute;
-  top: 150vh; /* 🔥 a 3D + menü alá */
-  left: 50%;
-  transform: translateX(-50%);
+/* 🎥 3D blokk */
+#three-container {
+  height: 100vh;
+}
 
+/* 🖼 GALÉRIA */
+#gallery {
   width: 90%;
   max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px 0;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-
-  z-index: 5;
 }
 
 #gallery img {
@@ -74,7 +71,10 @@ canvas {
 <!-- 🟤 MENÜ -->
 <div id="menu">MENÜ</div>
 
-<!-- 🖼️ GALÉRIA -->
+<!-- 🎥 3D -->
+<div id="three-container"></div>
+
+<!-- 🖼 GALÉRIA -->
 <div id="gallery">
   <img src="1.JPG">
   <img src="2.JPG">
@@ -92,12 +92,14 @@ canvas {
   <img src="14.JPG">
 </div>
 
-<!-- 📦 Three.js -->
+<!-- 📦 THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
+
+const container = document.getElementById("three-container");
 
 const scene = new THREE.Scene();
 
@@ -110,8 +112,7 @@ const camera = new THREE.PerspectiveCamera(
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xffffff);
-document.body.appendChild(renderer.domElement);
+container.appendChild(renderer.domElement);
 
 /* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
@@ -124,30 +125,23 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D modell */
-let object;
-
+/* 📦 3D */
 const loader = new THREE.GLTFLoader();
 
 loader.load("3DModel.obj.glb", function (gltf) {
-  object = gltf.scene;
-  scene.add(object);
+  scene.add(gltf.scene);
 });
 
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 MENÜ SCROLL LOGIKA */
+/* 🔥 SCROLL MENÜ */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
 
-  /* 3D követi scrollt */
-  renderer.domElement.style.top = scrollY * 0.5 + "px";
-
-  /* MENÜ megjelenik */
-  if (scrollY > 200) {
+  if (scrollY > 50) {
     menu.classList.add("show");
   } else {
     menu.classList.remove("show");
