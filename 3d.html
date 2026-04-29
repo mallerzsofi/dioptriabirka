@@ -11,11 +11,11 @@ body {
   background: white;
 }
 
-/* 🟢 3D SZEKCIÓ (FEHÉR HÁTTÉRREL) */
+/* 🟢 3D SZEKCIÓ (FEHÉR HÁTTÉR FIX) */
 #three-section {
   position: relative;
   height: 100vh;
-  background: white; /* 🔥 EZ A LÉNYEG */
+  background: #ffffff; /* 🔥 biztos fehér */
   overflow: hidden;
 }
 
@@ -24,7 +24,7 @@ canvas {
   display: block;
 }
 
-/* 🟤 MENÜ */
+/* 🟤 MENÜ (marad ugyanaz) */
 #menu {
   position: fixed;
   top: 0;
@@ -47,7 +47,6 @@ canvas {
   z-index: 9999;
 }
 
-/* ✨ megjelenik */
 #menu.show {
   opacity: 1;
   transform: translateY(0);
@@ -76,31 +75,28 @@ canvas {
 
 <body>
 
-<!-- 🟤 MENÜ -->
 <div id="menu">MENÜ</div>
 
-<!-- 🎥 3D SZEKCIÓ -->
 <div id="three-section"></div>
 
-<!-- 🖼 GALÉRIA -->
+<!-- 🖼 ÚJ SORREND + 2 KIVÉTEL -->
 <div id="gallery">
-  <img src="1.JPG">
-  <img src="2.JPG">
-  <img src="3.JPG">
-  <img src="4.JPG">
   <img src="5.JPG">
-  <img src="6.JPG">
-  <img src="7.JPG">
-  <img src="8.JPG">
+  <img src="1.JPG">
   <img src="9.JPG">
-  <img src="10.JPG">
-  <img src="11.JPG">
+
+  <img src="3.JPG">
   <img src="12.JPG">
-  <img src="13.JPG">
+  <img src="7.JPG">
+
   <img src="14.JPG">
+  <img src="2.JPG">
+  <img src="10.JPG">
+
+  <img src="6.JPG">
+  <img src="11.JPG">
 </div>
 
-<!-- 📦 THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
@@ -109,7 +105,7 @@ canvas {
 
 const section = document.getElementById("three-section");
 
-/* 🎥 renderer a sectionbe */
+/* 🎥 renderer */
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -121,6 +117,7 @@ const camera = new THREE.PerspectiveCamera(
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0xffffff); /* 🔥 NINCS FEKETE VILLANÁS */
 section.appendChild(renderer.domElement);
 
 /* 💡 fény */
@@ -144,19 +141,17 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 MENÜ LOGIKA (IGAZI LOGIKUS MEGOLDÁS) */
+/* 🔥 MENÜ LOGIKA */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
-
   const sectionBottom = section.getBoundingClientRect().bottom;
 
   if (sectionBottom <= 0) {
-    menu.classList.add("show"); // 🔥 csak ha vége a 3D-nek
+    menu.classList.add("show");
   } else {
     menu.classList.remove("show");
   }
-
 });
 
 /* 🔄 loop */
