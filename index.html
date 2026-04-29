@@ -11,11 +11,20 @@
   <source src="kenyér.MOV" type="video/mp4">
 </video>
 
+<!-- 🔥 kattintható réteg a videó felett -->
+<div id="click-layer"></div>
+
 <div class="menu">
   <a href="mi-ez.html">mi ez?</a>
 </div>
 
 <a href="ki-az.html" class="ki-az">ki az?</a>
+
+<script>
+document.getElementById("click-layer").addEventListener("click", function () {
+  window.location.href = "3d.html";
+});
+</script>
 
 </body>
 </html>
