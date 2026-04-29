@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>3D</title>
+
 <style>
 body {
   margin: 0;
   overflow: hidden;
-  background: white; /* 🔥 ne legyen fekete */
-}
-canvas {
-  display: block;
+  background: white;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -23,7 +21,6 @@ canvas {
 <script>
 const scene = new THREE.Scene();
 
-/* 📷 kamera */
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -31,40 +28,50 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-/* 🎥 renderer */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xffffff); // 🔥 fehér háttér
+renderer.setClearColor(0xffffff);
 document.body.appendChild(renderer.domElement);
 
-/* 💡 fények (EZ HIÁNYZOTT VALÓSZÍNŰLEG) */
-const light1 = new THREE.AmbientLight(0xffffff, 1);
-scene.add(light1);
+/* 💡 fény */
+scene.add(new THREE.AmbientLight(0xffffff, 1));
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 5, 5);
+scene.add(light);
 
-const light2 = new THREE.DirectionalLight(0xffffff, 1);
-light2.position.set(5, 5, 5);
-scene.add(light2);
+/* 🔴 TESZT KOCKA (fontos debug!) */
+const testGeo = new THREE.BoxGeometry();
+const testMat = new THREE.MeshNormalMaterial();
+const cube = new THREE.Mesh(testGeo, testMat);
+scene.add(cube);
 
-/* 📦 OBJ betöltés */
+/* 📦 OBJ */
 const loader = new THREE.OBJLoader();
 
 loader.load(
   "3DModel.obj",
-  function (object) {
-    scene.add(object);
+  function (obj) {
+    console.log("OBJ betöltve!");
+
+    obj.scale.set(1, 1, 1);
+    obj.position.set(0, 0, 0);
+
+    scene.add(obj);
   },
   undefined,
-  function (error) {
-    console.error("OBJ hiba:", error);
+  function (err) {
+    console.error("OBJ hiba:", err);
   }
 );
 
-/* 📍 kamera pozíció */
-camera.position.z = 5;
+camera.position.z = 3;
 
-/* 🔄 render loop */
+/* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
+
+  cube.rotation.y += 0.01; // 🔥 ha ezt látod → 3D OK
+
   renderer.render(scene, camera);
 }
 animate();
