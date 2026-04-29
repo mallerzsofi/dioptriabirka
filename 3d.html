@@ -2,12 +2,12 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>3D Scroll</title>
+<title>3D + Galéria</title>
 
 <style>
 body {
   margin: 0;
-  height: 200vh;
+  height: 300vh; /* 🔥 scroll hely */
   overflow-x: hidden;
   background: white;
 }
@@ -18,13 +18,13 @@ canvas {
   top: 0;
   left: 0;
   display: block;
-  z-index: 1; /* 🔥 3D legalul */
+  z-index: 1;
 }
 
 /* 🟤 MENÜ */
 #menu {
-  position: absolute;
-  top: 120vh;
+  position: fixed;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
 
@@ -35,20 +35,64 @@ canvas {
   opacity: 0;
   transition: 0.5s ease;
 
-  z-index: 9999; /* 🔥 mindig felül */
+  z-index: 9999;
 }
 
-/* ✨ megjelenés */
+/* ✨ megjelenik scrollra */
 #menu.show {
   opacity: 1;
+}
+
+/* 🖼️ GALÉRIA */
+#gallery {
+  position: absolute;
+  top: 150vh; /* 🔥 a 3D + menü alá */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+  max-width: 1000px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  z-index: 5;
+}
+
+#gallery img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
 }
 </style>
 </head>
 
 <body>
 
+<!-- 🟤 MENÜ -->
 <div id="menu">MENÜ</div>
 
+<!-- 🖼️ GALÉRIA -->
+<div id="gallery">
+  <img src="1.JPG">
+  <img src="2.JPG">
+  <img src="3.JPG">
+  <img src="4.JPG">
+  <img src="5.JPG">
+  <img src="6.JPG">
+  <img src="7.JPG">
+  <img src="8.JPG">
+  <img src="9.JPG">
+  <img src="10.JPG">
+  <img src="11.JPG">
+  <img src="12.JPG">
+  <img src="13.JPG">
+  <img src="14.JPG">
+</div>
+
+<!-- 📦 Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
@@ -80,31 +124,29 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D */
+/* 📦 3D modell */
 let object;
 
 const loader = new THREE.GLTFLoader();
 
 loader.load("3DModel.obj.glb", function (gltf) {
-
   object = gltf.scene;
   scene.add(object);
-
 });
 
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 MENÜ + SCROLL LOGIKA */
+/* 🔥 MENÜ SCROLL LOGIKA */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
 
-  /* 👉 3D követi a scrollt */
+  /* 3D követi scrollt */
   renderer.domElement.style.top = scrollY * 0.5 + "px";
 
-  /* 👉 MENÜ megjelenik */
+  /* MENÜ megjelenik */
   if (scrollY > 200) {
     menu.classList.add("show");
   } else {
