@@ -22,10 +22,11 @@
   right: 20px;
 }
 
+/* közös stílus */
 .menu a,
 .ki-az {
-  font-family: Consolas;
+  font-family: Impact, sans-serif;
   font-size: 20px;
-  color: white;
+  color: #de3333;
   text-decoration: none;
 }
