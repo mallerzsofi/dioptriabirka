@@ -2,25 +2,14 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>3D</title>
-
+<title>TESZT</title>
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: white;
-}
-canvas {
-  display: block;
-}
+body { margin: 0; overflow: hidden; background: white; }
 </style>
 </head>
-
 <body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/MTLLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
 
 <script>
 
@@ -38,44 +27,28 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff);
 document.body.appendChild(renderer.domElement);
 
-/* 💡 fények */
+/* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 5, 5);
-scene.add(light);
+/* 🔴 TESZT KOCKA */
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(),
+  new THREE.MeshNormalMaterial()
+);
 
-/* 📦 MTL + OBJ betöltés */
-const mtlLoader = new THREE.MTLLoader();
+scene.add(cube);
 
-mtlLoader.load("3DModel.mtl", function(materials) {
-  materials.preload();
-
-  const objLoader = new THREE.OBJLoader();
-  objLoader.setMaterials(materials);
-
-  objLoader.load("3DModel.obj", function(object) {
-
-    scene.add(object);
-
-    /* 🔥 biztos láthatóság */
-    object.position.set(0, 0, 0);
-    object.scale.set(1, 1, 1);
-
-  }, undefined, function(err) {
-    console.error("OBJ hiba:", err);
-  });
-
-});
-
-/* 📷 kamera */
 camera.position.z = 3;
 
 /* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
+
+  cube.rotation.y += 0.01;
+
   renderer.render(scene, camera);
 }
+
 animate();
 
 </script>
