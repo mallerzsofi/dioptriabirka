@@ -7,7 +7,7 @@
 <style>
 body {
   margin: 0;
-  height: 200vh; /* 🔥 ettől lesz scroll */
+  height: 200vh; /* 🔥 scroll kell */
   overflow-x: hidden;
   background: white;
 }
@@ -20,23 +20,24 @@ canvas {
   display: block;
 }
 
-/* 📌 MENÜ (alapból rejtve) */
+/* 🟤 MENÜ */
 #menu {
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(-20px);
-  
+
   font-family: Impact, sans-serif;
   font-size: 40px;
   color: #C1900B;
-  
+
   opacity: 0;
   transition: 0.5s ease;
   pointer-events: none;
+  z-index: 10;
 }
 
-/* ✨ látható állapot */
+/* ✨ megjelenés */
 #menu.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
@@ -80,14 +81,12 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 modell */
-let object;
-
+/* 📦 3D modell */
 const loader = new THREE.GLTFLoader();
 
 loader.load("3DModel.obj.glb", function (gltf) {
 
-  object = gltf.scene;
+  const object = gltf.scene;
   scene.add(object);
 
 });
@@ -95,11 +94,11 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 SCROLL MENÜ LOGIKA */
+/* 🔥 MENÜ LOGIKA (FIX) */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
-  const scrollY = window.scrollY;
+  const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
 
   if (scrollY > 100) {
     menu.classList.add("show");
@@ -108,7 +107,7 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* 🔄 animáció */
+/* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
 
