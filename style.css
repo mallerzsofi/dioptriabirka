@@ -27,7 +27,7 @@ body {
 /* 📌 mi ez? BAL FELSŐ */
 .menu {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   left: 20px;
   z-index: 2;
 }
