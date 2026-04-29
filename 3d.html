@@ -11,7 +11,20 @@ body {
   background: white;
 }
 
-/* 🟤 MENÜ (FIX FELÜL, DE NEM TAKAR SEMMIT) */
+/* 🟢 3D SZEKCIÓ (FEHÉR HÁTTÉRREL) */
+#three-section {
+  position: relative;
+  height: 100vh;
+  background: white; /* 🔥 EZ A LÉNYEG */
+  overflow: hidden;
+}
+
+/* 🎥 canvas */
+canvas {
+  display: block;
+}
+
+/* 🟤 MENÜ */
 #menu {
   position: fixed;
   top: 0;
@@ -25,8 +38,8 @@ body {
   font-size: 40px;
   color: #C1900B;
 
-  background: rgba(255,255,255,0.9); /* 🔥 ne olvadjon bele */
-  
+  background: rgba(255,255,255,0.95);
+
   opacity: 0;
   transform: translateY(-100%);
   transition: 0.4s ease;
@@ -34,15 +47,10 @@ body {
   z-index: 9999;
 }
 
-/* ✨ scroll után jön be */
+/* ✨ megjelenik */
 #menu.show {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* 🎥 3D blokk */
-#three-container {
-  height: 100vh;
 }
 
 /* 🖼 GALÉRIA */
@@ -71,8 +79,8 @@ body {
 <!-- 🟤 MENÜ -->
 <div id="menu">MENÜ</div>
 
-<!-- 🎥 3D -->
-<div id="three-container"></div>
+<!-- 🎥 3D SZEKCIÓ -->
+<div id="three-section"></div>
 
 <!-- 🖼 GALÉRIA -->
 <div id="gallery">
@@ -99,8 +107,9 @@ body {
 
 <script>
 
-const container = document.getElementById("three-container");
+const section = document.getElementById("three-section");
 
+/* 🎥 renderer a sectionbe */
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -112,7 +121,7 @@ const camera = new THREE.PerspectiveCamera(
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-container.appendChild(renderer.domElement);
+section.appendChild(renderer.domElement);
 
 /* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
@@ -135,17 +144,19 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 SCROLL MENÜ */
+/* 🔥 MENÜ LOGIKA (IGAZI LOGIKUS MEGOLDÁS) */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
-  const scrollY = window.scrollY;
 
-  if (scrollY > 50) {
-    menu.classList.add("show");
+  const sectionBottom = section.getBoundingClientRect().bottom;
+
+  if (sectionBottom <= 0) {
+    menu.classList.add("show"); // 🔥 csak ha vége a 3D-nek
   } else {
     menu.classList.remove("show");
   }
+
 });
 
 /* 🔄 loop */
