@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<title>mi ez?</title>
+    <meta charset="UTF-8">
+    <title>Mi ez?</title>
+    <style>
+        body {
+            background-color: white;
+            margin: 0;
+            font-family: Consolas, monospace;
+        }
 
-<style>
-body {
-  margin: 0;
-  background: white;
-  font-family: Consolas;
-  font-size: 12px;
-  color: black;
-}
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            padding: 40px;
+        }
 
-/* 📜 szöveg bal oldalt */
-.text {
-  max-width: 60%;
-  padding: 40px;
-}
+        .text {
+            font-size: 12px;
+            color: black;
+            max-width: 60%;
+        }
 
-/* 🖼 kép jobb oldalt középen */
-.image {
-  position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 300px;
-  cursor: pointer;
-}
-</style>
+        .image {
+            max-width: 300px;
+            cursor: pointer;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- 📜 SZÖVEG -->
-<div class="text">
-ez félig az aminek látszik, de amúgy egy olyan oldal, ahol minden az étel-ennivaló-élelem-éledel-eleség-étek-táplálék-harapnivaló-kaja-élelmiszer-koszt-elemózsia-tápanyag-betevő-manna-fogamravaló-falnivaló körül forog és bemutatásra kerül mennyire nagyon benne van folyamatosan az agyamban az, hogy mikor mit fogok enni és mit kell vennem hozzá, amit majd mikor főzök meg és mennyit kell abból magammal vinnem, hogy ne keljen sok millió magyar forintot költeném.
-</div>
+<div class="container">
+    <div class="text">
+        ez félig az aminek látszik, de amúgy egy olyan oldal, ahol minden az étel-ennivaló-élelem-eledel-eleség-étek-táplálék-harapnivaló-kaja-élelmiszer-koszt-elemózsia-tápanyag-betevő-manna-fogamravaló-falnivaló körül forog és bemutatásra kerül mennyire nagyon benne van folyamatosan az agyamban az, hogy mikor mit fogok enni és mit kell vennem hozzá, amit majd mikor főzök meg és mennyit kell abból magammal vinnem, hogy ne keljen sok millió magyar forintot költeném.
+    </div>
 
-<!-- 🖼 KÉP -->
-<img class="image" src="aha.png" onclick="location.href='index.html'">
+    <img src="aha.png" class="image" onclick="window.location.href='index.html'">
+</div>
 
 </body>
 </html>
