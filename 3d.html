@@ -2,30 +2,30 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>3D Scroll</title>
+<title>3D Scroll Follow</title>
 
 <style>
 body {
   margin: 0;
-  height: 200vh; /* 🔥 scroll kell */
+  height: 200vh;
   overflow-x: hidden;
   background: white;
 }
 
-/* 🎥 3D fix háttér */
+/* 🎥 CANVAS MOST NEM FIX */
 canvas {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   display: block;
 }
 
-/* 🟤 MENÜ */
+/* 🟤 MENÜ a 3D alatt */
 #menu {
-  position: fixed;
-  top: 20px;
+  position: absolute;
+  top: 120vh; /* 🔥 a 3D ALÁ kerül */
   left: 50%;
-  transform: translateX(-50%) translateY(-20px);
+  transform: translateX(-50%);
 
   font-family: Impact, sans-serif;
   font-size: 40px;
@@ -33,21 +33,17 @@ canvas {
 
   opacity: 0;
   transition: 0.5s ease;
-  pointer-events: none;
-  z-index: 10;
 }
 
-/* ✨ megjelenés */
+/* ✨ látható állapot */
 #menu.show {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 MENÜ -->
 <div id="menu">MENÜ</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -81,12 +77,14 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D modell */
+/* 📦 3D */
+let object;
+
 const loader = new THREE.GLTFLoader();
 
 loader.load("3DModel.obj.glb", function (gltf) {
 
-  const object = gltf.scene;
+  object = gltf.scene;
   scene.add(object);
 
 });
@@ -94,13 +92,17 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 MENÜ LOGIKA (FIX) */
+/* 🔥 SCROLL = 3D MOZGÁS + MENÜ */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
-  const scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollY = window.scrollY;
 
-  if (scrollY > 100) {
+  /* 👉 3D követi a scrollt */
+  renderer.domElement.style.top = scrollY * 0.5 + "px";
+
+  /* 👉 MENÜ megjelenik */
+  if (scrollY > 200) {
     menu.classList.add("show");
   } else {
     menu.classList.remove("show");
@@ -112,7 +114,6 @@ function animate() {
   requestAnimationFrame(animate);
 
   controls.update();
-
   renderer.render(scene, camera);
 }
 
