@@ -7,6 +7,7 @@
 body {
   margin: 0;
   overflow: hidden;
+  background: white; /* 🔥 ne legyen fekete */
 }
 canvas {
   display: block;
@@ -21,24 +22,47 @@ canvas {
 
 <script>
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
-const renderer = new THREE.WebGLRenderer();
+/* 📷 kamera */
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+/* 🎥 renderer */
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0xffffff); // 🔥 fehér háttér
 document.body.appendChild(renderer.domElement);
 
-// fény
-const light = new THREE.AmbientLight(0xffffff);
-scene.add(light);
+/* 💡 fények (EZ HIÁNYZOTT VALÓSZÍNŰLEG) */
+const light1 = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light1);
 
-// OBJ betöltés
+const light2 = new THREE.DirectionalLight(0xffffff, 1);
+light2.position.set(5, 5, 5);
+scene.add(light2);
+
+/* 📦 OBJ betöltés */
 const loader = new THREE.OBJLoader();
-loader.load('3DModel.obj', function(object) {
-  scene.add(object);
-});
 
+loader.load(
+  "3DModel.obj",
+  function (object) {
+    scene.add(object);
+  },
+  undefined,
+  function (error) {
+    console.error("OBJ hiba:", error);
+  }
+);
+
+/* 📍 kamera pozíció */
 camera.position.z = 5;
 
+/* 🔄 render loop */
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
