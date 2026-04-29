@@ -37,55 +37,59 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff);
 document.body.appendChild(renderer.domElement);
 
-/* 💡 fények */
+/* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-/* 📦 OBJ BETÖLTÉS (EGYEDÜL) */
+/* 📦 OBJ BETÖLTÉS */
 const loader = new THREE.OBJLoader();
 
-loader.load(
-  "3DModel.obj",
+loader.load("3DModel.obj", function(object) {
 
-  function (object) {
+  /* 🔥 biztos material */
+  object.traverse(function(child) {
+    if (child.isMesh) {
+      child.material = new THREE.MeshNormalMaterial();
+    }
+  });
 
-    /* 🔥 biztos láthatóság (anyag fix) */
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.material = new THREE.MeshNormalMaterial();
-      }
-    });
+  /* 📏 AUTOMATIKUS MÉRETEZÉS (EZ A KULCS) */
+  const box = new THREE.Box3().setFromObject(object);
+  const size = new THREE.Vector3();
+  box.getSize(size);
 
-    scene.add(object);
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const scale = 2 / maxDim;
+  object.scale.set(scale, scale, scale);
 
-    /* 📍 pozíció + méret */
-    object.position.set(0, 0, 0);
-    object.scale.set(1, 1, 1);
+  /* 📍 KÖZÉPRE IGAZÍTÁS */
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  object.position.sub(center.multiplyScalar(scale));
 
-  },
+  scene.add(object);
 
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + "% betöltve");
-  },
-
-  function (error) {
-    console.error("OBJ hiba:", error);
-  }
-);
+});
 
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 loop */
+/* 🔄 animáció */
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
-
 animate();
+
+/* 📱 resize fix */
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 </script>
 
