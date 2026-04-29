@@ -2,21 +2,52 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>3D</title>
+<title>3D Scroll</title>
 
 <style>
 body {
   margin: 0;
-  overflow: hidden;
+  height: 200vh; /* 🔥 ettől lesz scroll */
+  overflow-x: hidden;
   background: white;
 }
+
+/* 🎥 3D fix háttér */
 canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: block;
+}
+
+/* 📌 MENÜ (alapból rejtve) */
+#menu {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  
+  font-family: Impact, sans-serif;
+  font-size: 40px;
+  color: #C1900B;
+  
+  opacity: 0;
+  transition: 0.5s ease;
+  pointer-events: none;
+}
+
+/* ✨ látható állapot */
+#menu.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 </style>
 </head>
 
 <body>
+
+<!-- 🔥 MENÜ -->
+<div id="menu">MENÜ</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
@@ -45,32 +76,18 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-/* 🎮 EGÉR VEZÉRLÉS */
+/* 🎮 controls */
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true; // finom mozgás
-controls.dampingFactor = 0.05;
+controls.enableDamping = true;
 
-/* 📦 GLB BETÖLTÉS */
+/* 📦 modell */
+let object;
+
 const loader = new THREE.GLTFLoader();
 
 loader.load("3DModel.obj.glb", function (gltf) {
 
-  const object = gltf.scene;
-
-  /* 📏 méretezés */
-  const box = new THREE.Box3().setFromObject(object);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const scale = 2 / maxDim;
-  object.scale.set(scale, scale, scale);
-
-  /* 📍 középre */
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  object.position.sub(center.multiplyScalar(scale));
-
+  object = gltf.scene;
   scene.add(object);
 
 });
@@ -78,11 +95,24 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 loop */
+/* 🔥 SCROLL MENÜ LOGIKA */
+const menu = document.getElementById("menu");
+
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+
+  if (scrollY > 100) {
+    menu.classList.add("show");
+  } else {
+    menu.classList.remove("show");
+  }
+});
+
+/* 🔄 animáció */
 function animate() {
   requestAnimationFrame(animate);
 
-  controls.update(); // 🔥 EZ KELL AZ EGÉRHEZ
+  controls.update();
 
   renderer.render(scene, camera);
 }
