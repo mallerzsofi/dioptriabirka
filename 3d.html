@@ -19,7 +19,7 @@ canvas {
 <body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
 <script>
 
@@ -44,35 +44,42 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-/* 📦 OBJ BETÖLTÉS */
-const loader = new THREE.OBJLoader();
+/* 📦 GLB BETÖLTÉS */
+const loader = new THREE.GLTFLoader();
 
-loader.load("3DModel.obj", function(object) {
+loader.load(
+  "3DModel.obj.glb",
 
-  /* 🔥 biztos material */
-  object.traverse(function(child) {
-    if (child.isMesh) {
-      child.material = new THREE.MeshNormalMaterial();
-    }
-  });
+  function (gltf) {
 
-  /* 📏 AUTOMATIKUS MÉRETEZÉS (EZ A KULCS) */
-  const box = new THREE.Box3().setFromObject(object);
-  const size = new THREE.Vector3();
-  box.getSize(size);
+    const object = gltf.scene;
 
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const scale = 2 / maxDim;
-  object.scale.set(scale, scale, scale);
+    /* 📏 AUTOMATIKUS MÉRETEZÉS */
+    const box = new THREE.Box3().setFromObject(object);
+    const size = new THREE.Vector3();
+    box.getSize(size);
 
-  /* 📍 KÖZÉPRE IGAZÍTÁS */
-  const center = new THREE.Vector3();
-  box.getCenter(center);
-  object.position.sub(center.multiplyScalar(scale));
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 2 / maxDim;
+    object.scale.set(scale, scale, scale);
 
-  scene.add(object);
+    /* 📍 KÖZÉPRE IGAZÍTÁS */
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    object.position.sub(center.multiplyScalar(scale));
 
-});
+    scene.add(object);
+
+  },
+
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + "% betöltve");
+  },
+
+  function (error) {
+    console.error("GLB hiba:", error);
+  }
+);
 
 /* 📷 kamera */
 camera.position.z = 3;
@@ -84,7 +91,7 @@ function animate() {
 }
 animate();
 
-/* 📱 resize fix */
+/* 📱 resize */
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
