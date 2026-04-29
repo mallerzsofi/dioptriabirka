@@ -24,7 +24,37 @@ body {
   z-index: 1;
 }
 
-/* 📌 mi ez? BAL FELSŐ */
+/* 🧠 cím felül középen */
+.title {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  color: white;
+  font-family: Impact, sans-serif;
+  font-size: 50px;
+  letter-spacing: 0.5em;
+
+  z-index: 2;
+
+  animation: floatText 3s ease-in-out infinite;
+}
+
+/* ✨ lebegő animáció */
+@keyframes floatText {
+  0% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  50% {
+    transform: translateX(-50%) translateY(10px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+}
+
+/* 📌 mi ez? BAL alsó (nálad így van most) */
 .menu {
   position: fixed;
   bottom: 20px;
@@ -32,7 +62,7 @@ body {
   z-index: 2;
 }
 
-/* 📌 ki az? JOBB ALSÓ */
+/* 📌 ki az? JOBB alsó */
 .ki-az {
   position: fixed;
   bottom: 20px;
@@ -44,7 +74,7 @@ body {
 .menu a,
 .ki-az {
   font-family: Impact, sans-serif;
-  font-size: 30px;
+  font-size: 28px;
   color: #de3333;
   text-decoration: none;
 }
