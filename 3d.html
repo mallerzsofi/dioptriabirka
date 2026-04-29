@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>3D Scroll Follow</title>
+<title>3D Scroll</title>
 
 <style>
 body {
@@ -12,18 +12,19 @@ body {
   background: white;
 }
 
-/* 🎥 CANVAS MOST NEM FIX */
+/* 🎥 3D canvas */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
   display: block;
+  z-index: 1; /* 🔥 3D legalul */
 }
 
-/* 🟤 MENÜ a 3D alatt */
+/* 🟤 MENÜ */
 #menu {
   position: absolute;
-  top: 120vh; /* 🔥 a 3D ALÁ kerül */
+  top: 120vh;
   left: 50%;
   transform: translateX(-50%);
 
@@ -33,9 +34,11 @@ canvas {
 
   opacity: 0;
   transition: 0.5s ease;
+
+  z-index: 9999; /* 🔥 mindig felül */
 }
 
-/* ✨ látható állapot */
+/* ✨ megjelenés */
 #menu.show {
   opacity: 1;
 }
@@ -92,7 +95,7 @@ loader.load("3DModel.obj.glb", function (gltf) {
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 SCROLL = 3D MOZGÁS + MENÜ */
+/* 🔥 MENÜ + SCROLL LOGIKA */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
