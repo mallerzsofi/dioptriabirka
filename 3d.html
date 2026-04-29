@@ -44,6 +44,8 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
+let object; // 🔥 globális hogy az animate lássa
+
 /* 📦 GLB BETÖLTÉS */
 const loader = new THREE.GLTFLoader();
 
@@ -52,9 +54,9 @@ loader.load(
 
   function (gltf) {
 
-    const object = gltf.scene;
+    object = gltf.scene;
 
-    /* 📏 AUTOMATIKUS MÉRETEZÉS */
+    /* 📏 méretezés */
     const box = new THREE.Box3().setFromObject(object);
     const size = new THREE.Vector3();
     box.getSize(size);
@@ -63,7 +65,7 @@ loader.load(
     const scale = 2 / maxDim;
     object.scale.set(scale, scale, scale);
 
-    /* 📍 KÖZÉPRE IGAZÍTÁS */
+    /* 📍 középre */
     const center = new THREE.Vector3();
     box.getCenter(center);
     object.position.sub(center.multiplyScalar(scale));
@@ -84,11 +86,17 @@ loader.load(
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 animáció */
+/* 🔄 animáció (FORGÁS IDE) */
 function animate() {
   requestAnimationFrame(animate);
+
+  if (object) {
+    object.rotation.y += 0.01; // 🔥 folyamatos forgás
+  }
+
   renderer.render(scene, camera);
 }
+
 animate();
 
 /* 📱 resize */
