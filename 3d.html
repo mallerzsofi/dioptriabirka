@@ -20,6 +20,7 @@ canvas {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
 
@@ -44,55 +45,44 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-let object; // 🔥 globális hogy az animate lássa
+/* 🎮 EGÉR VEZÉRLÉS */
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; // finom mozgás
+controls.dampingFactor = 0.05;
 
 /* 📦 GLB BETÖLTÉS */
 const loader = new THREE.GLTFLoader();
 
-loader.load(
-  "3DModel.obj.glb",
+loader.load("3DModel.obj.glb", function (gltf) {
 
-  function (gltf) {
+  const object = gltf.scene;
 
-    object = gltf.scene;
+  /* 📏 méretezés */
+  const box = new THREE.Box3().setFromObject(object);
+  const size = new THREE.Vector3();
+  box.getSize(size);
 
-    /* 📏 méretezés */
-    const box = new THREE.Box3().setFromObject(object);
-    const size = new THREE.Vector3();
-    box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const scale = 2 / maxDim;
+  object.scale.set(scale, scale, scale);
 
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 2 / maxDim;
-    object.scale.set(scale, scale, scale);
+  /* 📍 középre */
+  const center = new THREE.Vector3();
+  box.getCenter(center);
+  object.position.sub(center.multiplyScalar(scale));
 
-    /* 📍 középre */
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-    object.position.sub(center.multiplyScalar(scale));
+  scene.add(object);
 
-    scene.add(object);
-
-  },
-
-  function (xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + "% betöltve");
-  },
-
-  function (error) {
-    console.error("GLB hiba:", error);
-  }
-);
+});
 
 /* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔄 animáció (FORGÁS IDE) */
+/* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
 
-  if (object) {
-    object.rotation.y += 0.01; // 🔥 folyamatos forgás
-  }
+  controls.update(); // 🔥 EZ KELL AZ EGÉRHEZ
 
   renderer.render(scene, camera);
 }
