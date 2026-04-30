@@ -1,17 +1,7 @@
-* {
-  box-sizing: border-box;
-}
-
 /* 🌍 alap */
 body {
   margin: 0;
-
-  /* 🔥 mobilon biztonságosabb mint hidden */
   overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  height: 100svh;
-  height: 100dvh;
 }
 
 /* 🎥 háttérvideó */
@@ -19,12 +9,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-
-  width: 100vw;
-  height: 100vh;
-  height: 100svh;
-  height: 100dvh;
-
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: -1;
 }
@@ -34,31 +20,27 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1;
-  touch-action: manipulation; /* 🔥 mobil tap stabilitás */
 }
 
 /* 🧠 cím */
 .title {
   position: fixed;
-  top: max(20px, env(safe-area-inset-top));
+  top: 20px;
   left: 50%;
+  transform: translateX(-50%);
 
   color: white;
   font-family: Impact, sans-serif;
 
-  font-size: clamp(22px, 6vw, 45px);
+  font-size: 45px;
   letter-spacing: 0.4em;
 
   z-index: 2;
 
-  /* 🔥 FIX: animáció NEM írhatja felül a center transformot */
-  transform: translateX(-50%);
-
   animation: floatText 3s ease-in-out infinite;
-  will-change: transform;
 }
 
-/* ✨ lebegés (FIX: csak Y irány, nem írjuk felül a középre igazítást) */
+/* ✨ lebegés */
 @keyframes floatText {
   0% {
     transform: translateX(-50%) translateY(0px);
@@ -74,7 +56,7 @@ body {
 /* 📌 bal alsó */
 .menu {
   position: fixed;
-  bottom: max(20px, env(safe-area-inset-bottom));
+  bottom: 20px;
   left: 20px;
   z-index: 2;
 }
@@ -82,7 +64,7 @@ body {
 /* 📌 jobb alsó */
 .ki-az {
   position: fixed;
-  bottom: max(20px, env(safe-area-inset-bottom));
+  bottom: 20px;
   right: 20px;
   z-index: 2;
 }
@@ -91,20 +73,7 @@ body {
 .menu a,
 .ki-az {
   font-family: Impact, sans-serif;
-
-  font-size: clamp(18px, 4.5vw, 28px);
-
+  font-size: 28px;
   color: #de3333;
   text-decoration: none;
-
-  /* 🔥 mobil tap stabil */
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* hover csak desktopon */
-@media (hover: hover) {
-  .menu a:hover,
-  .ki-az:hover {
-    opacity: 0.7;
-  }
 }
