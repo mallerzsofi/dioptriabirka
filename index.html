@@ -1,1 +1,39 @@
-<!DOCTYPE html> <html lang="hu"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Főoldal</title> <link rel="stylesheet" href="style.css"> </head> <body> <!-- 🎥 háttér videó --> <video autoplay muted loop playsinline id="bg-video"> <source src="kenyér.MOV" type="video/mp4"> </video> <!-- 🧠 cím --> <div class="title">dioptriabirka</div> <!-- 🔥 teljes képernyős kattintható réteg --> <div id="click-layer"></div> <!-- 📌 menü --> <div class="menu"> <a href="mi-ez.html">mi ez?</a> </div> <a href="ki-az.html" class="ki-az">ki az?</a> <script> document.getElementById("click-layer").addEventListener("click", function () { window.location.href = "3d.html"; }); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Főoldal</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- 🎥 háttér videó -->
+<video autoplay muted loop playsinline id="bg-video">
+  <source src="kenyér.MOV" type="video/mp4">
+</video>
+
+<!-- 🧠 cím -->
+<div class="title">dioptriabirka</div>
+
+<!-- 🔥 kattintható réteg -->
+<div id="click-layer"></div>
+
+<!-- 📌 menü -->
+<div class="menu">
+  <a href="mi-ez.html">mi ez?</a>
+</div>
+
+<a href="ki-az.html" class="ki-az">ki az?</a>
+
+<script>
+document.getElementById("click-layer").addEventListener("click", function () {
+  window.location.href = "3d.html";
+});
+</script>
+
+</body>
+</html>
