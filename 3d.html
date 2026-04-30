@@ -80,9 +80,9 @@ canvas {
 /* 💰 ár */
 .price {
   position: absolute;
-  top: 10%;
+  top: 10px;
   left: 50%;
-  transform: translate(-50%);
+  transform: translateX(-50%);
 
   font-family: Consolas, monospace;
   font-size: 16px;
@@ -103,26 +103,27 @@ canvas {
 <!-- 🖼 GALÉRIA -->
 <div id="gallery">
 
-  <div class="image-wrapper"><img src="5.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="1.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="9.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="5.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="1.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="9.JPG" onerror="this.parentElement.style.display='none'"></div>
 
-  <div class="image-wrapper"><img src="3.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="12.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="7.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="3.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="12.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="7.JPG" onerror="this.parentElement.style.display='none'"></div>
 
-  <div class="image-wrapper"><img src="14.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="2.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="10.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="14.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="2.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="10.JPG" onerror="this.parentElement.style.display='none'"></div>
 
-  <div class="image-wrapper"><img src="6.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="11.JPG" onerror="this.style.display='none'"></div>
-  <div class="image-wrapper"><img src="13.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="6.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="11.JPG" onerror="this.parentElement.style.display='none'"></div>
+  <div class="image-wrapper"><img src="13.JPG" onerror="this.parentElement.style.display='none'"></div>
 
-  <div class="image-wrapper"><img src="4.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="4.JPG" onerror="this.parentElement.style.display='none'"></div>
 
 </div>
 
+<!-- 📦 THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
