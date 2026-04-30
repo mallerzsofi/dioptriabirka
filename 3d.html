@@ -2,35 +2,46 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>3D + Galéria</title>
 
 <style>
+/* =========================
+   ALAP
+========================= */
 body {
   margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: white;
   overflow-x: hidden;
   overscroll-behavior: none;
 }
 
-/* 🟢 3D SZEKCIÓ */
+/* =========================
+   3D SZEKCIÓ
+========================= */
 #three-section {
   position: relative;
+  width: 100%;
   height: 100vh;
   height: 100svh;
+  height: 100dvh; /* 🔥 mobil fix */
   overflow: hidden;
+  touch-action: none; /* 🔥 OrbitControls fix */
 }
 
-/* 🎥 canvas */
+/* canvas fix */
 canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
 }
 
-/* 🟤 MENÜ */
+/* =========================
+   MENÜ
+========================= */
 #menu {
   position: fixed;
   top: 0;
@@ -58,7 +69,9 @@ canvas {
   transform: translateY(0);
 }
 
-/* 🖼 GALÉRIA */
+/* =========================
+   GALÉRIA
+========================= */
 #gallery {
   width: 95%;
   max-width: 1000px;
@@ -70,21 +83,21 @@ canvas {
   gap: 10px;
 }
 
-/* 📱 TABLET */
+/* tablet */
 @media (max-width: 768px) {
   #gallery {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* 📱 TELEFON */
+/* telefon */
 @media (max-width: 480px) {
   #gallery {
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
-/* 🖼 képek */
+/* képek */
 .image-wrapper {
   position: relative;
   cursor: pointer;
@@ -97,7 +110,7 @@ canvas {
   display: block;
 }
 
-/* 💰 ár */
+/* ár */
 .price {
   position: absolute;
   top: 10px;
@@ -111,6 +124,7 @@ canvas {
   pointer-events: none;
 }
 </style>
+
 </head>
 
 <body>
@@ -119,7 +133,9 @@ canvas {
 
 <div id="three-section"></div>
 
-<!-- 🖼 GALÉRIA -->
+<!-- =========================
+     GALÉRIA
+========================= -->
 <div id="gallery">
 
   <div class="image-wrapper"><img src="5.JPG" onerror="this.parentElement.style.display='none'"></div>
@@ -142,14 +158,18 @@ canvas {
 
 </div>
 
-<!-- 📦 THREE.JS -->
+<!-- =========================
+     THREE.JS
+========================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
 
-/* 🎥 SCENE */
+/* =========================
+   SCENE SETUP
+========================= */
 const section = document.getElementById("three-section");
 
 const scene = new THREE.Scene();
@@ -161,35 +181,68 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+/* renderer FIX */
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true,
+  powerPreference: "high-performance"
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setClearColor(0xffffff);
+renderer.outputEncoding = THREE.sRGBEncoding;
+
 section.appendChild(renderer.domElement);
 
-/* 💡 fények */
+/* =========================
+   LIGHTS
+========================= */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5, 5, 5);
 scene.add(light);
 
-/* 🎮 controls */
+/* =========================
+   CONTROLS
+========================= */
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.enableZoom = true;
 controls.rotateSpeed = 0.5;
 
-/* 📦 modell */
+/* =========================
+   MODEL
+========================= */
 const loader = new THREE.GLTFLoader();
-loader.load("3DModel.glb", (gltf) => {
-  scene.add(gltf.scene);
-});
+
+loader.load(
+  "3DModel.glb",
+  (gltf) => {
+    scene.add(gltf.scene);
+  },
+  undefined,
+  (err) => {
+    console.log("3D load error:", err);
+  }
+);
 
 camera.position.z = 3;
 
-/* 🟤 MENÜ scroll trigger */
+/* =========================
+   RENDER LOOP
+========================= */
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+/* =========================
+   MENU SCROLL LOGIC
+========================= */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
@@ -202,24 +255,23 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* 🔄 render loop */
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
-}
-animate();
-
-/* 📱 resize fix */
-window.addEventListener("resize", () => {
+/* =========================
+   RESIZE FIX (MOBIL SAFE)
+========================= */
+function onResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
+}
 
-/* 💰 random ár */
+window.addEventListener("resize", onResize);
+window.addEventListener("orientationchange", onResize);
+
+/* =========================
+   RANDOM PRICE
+========================= */
 function randomPrice() {
   const min = 60000;
   const max = 120000;
@@ -227,7 +279,9 @@ function randomPrice() {
   return value.toLocaleString('hu-HU') + " Ft";
 }
 
-/* 🖱 kattintás */
+/* =========================
+   CLICK PRICE TOGGLE
+========================= */
 document.querySelectorAll(".image-wrapper").forEach(wrapper => {
   wrapper.addEventListener("click", () => {
     const existing = wrapper.querySelector(".price");
