@@ -153,7 +153,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 section.appendChild(renderer.domElement);
 
-/* 💡 fény */
+/* 💡 fények */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -164,7 +164,7 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D model */
+/* 📦 3D modell */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
@@ -188,7 +188,7 @@ function animate() {
 }
 animate();
 
-/* 🟤 MENU scroll */
+/* 🟤 menu scroll */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
@@ -210,24 +210,15 @@ window.addEventListener("resize", () => {
 });
 
 /* =========================
-   💰 ÁR RENDSZER
+   💰 ÁR RENDSZER (FIX 1 ÁR)
 ========================= */
 
-function formatPrice(num) {
-  return num.toLocaleString('hu-HU') + " ft";
+function randomPrice() {
+  const value = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+  return value.toLocaleString('hu-HU') + " ft";
 }
 
-function randomPriceRange() {
-  const min = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-  const max = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
-
-  const low = Math.min(min, max);
-  const high = Math.max(min, max);
-
-  return `${formatPrice(low)} - ${formatPrice(high)}`;
-}
-
-/* 🖱 click price */
+/* 🖱 click event */
 document.querySelectorAll(".image-wrapper").forEach(wrapper => {
   wrapper.addEventListener("click", () => {
     const existing = wrapper.querySelector(".price");
@@ -237,7 +228,7 @@ document.querySelectorAll(".image-wrapper").forEach(wrapper => {
     } else {
       const price = document.createElement("div");
       price.className = "price";
-      price.innerText = randomPriceRange();
+      price.innerText = randomPrice();
       wrapper.appendChild(price);
     }
   });
