@@ -21,9 +21,10 @@ body {
   overflow: hidden;
 }
 
-/* canvas */
+/* 🔥 canvas FIX (EZ VOLT A HIBA 1) */
 canvas {
   display: block;
+  pointer-events: none; /* 👉 EZ ENGEDI A KATTINTÁST ALÁ */
 }
 
 /* 🟤 MENÜ */
@@ -52,7 +53,7 @@ canvas {
   transform: translateY(0);
 }
 
-/* 🖼 GALÉRIA */
+/* 🖼 GALÉRIA (FIX GRID BIZTONSÁG) */
 #gallery {
   width: 95%;
   max-width: 1000px;
@@ -66,14 +67,17 @@ canvas {
 
 .image-wrapper {
   position: relative;
+  cursor: pointer;
 }
 
 .image-wrapper img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  display: block;
 }
 
+/* 💰 ár */
 .price {
   position: absolute;
   top: 10px;
@@ -82,6 +86,20 @@ canvas {
   font-family: Consolas;
   font-size: 14px;
   color: #3179ac;
+  pointer-events: none;
+}
+
+/* 📱 responsive (nem kötelező, de nem törik szét) */
+@media (max-width: 768px) {
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  #gallery {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 </style>
 </head>
@@ -112,7 +130,7 @@ canvas {
 
 <script>
 
-/* 🎥 setup */
+/* 🎥 SCENE */
 const section = document.getElementById("three-section");
 
 const scene = new THREE.Scene();
@@ -124,7 +142,10 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true
+});
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 section.appendChild(renderer.domElement);
@@ -138,12 +159,21 @@ scene.add(light);
 
 /* 🎮 controls */
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
 
 /* 📦 model */
 const loader = new THREE.GLTFLoader();
-loader.load("3DModel.glb", (gltf) => {
-  scene.add(gltf.scene);
-});
+
+loader.load(
+  "3DModel.glb",
+  (gltf) => {
+    scene.add(gltf.scene);
+  },
+  undefined,
+  (err) => {
+    console.log("❌ 3D ERROR:", err);
+  }
+);
 
 camera.position.z = 3;
 
@@ -168,12 +198,28 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* resize */
+/* 📱 resize */
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* 💰 ár kattintás */
+document.querySelectorAll(".image-wrapper").forEach(wrapper => {
+  wrapper.addEventListener("click", () => {
+    const existing = wrapper.querySelector(".price");
+
+    if (existing) {
+      existing.remove();
+    } else {
+      const price = document.createElement("div");
+      price.className = "price";
+      price.innerText = Math.floor(Math.random() * 60000 + 60000) + " Ft";
+      wrapper.appendChild(price);
+    }
+  });
 });
 
 </script>
