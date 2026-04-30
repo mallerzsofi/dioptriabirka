@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MENÜ</title>
+<title>3D + Galéria</title>
 
 <style>
 body {
@@ -131,8 +131,8 @@ canvas {
 
 <!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/OBJLoader.js"></script>
 
 <script>
 
@@ -170,37 +170,36 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 FALLBACK KOCKA (ha GLB nem jön be) */
+/* 📦 fallback kocka */
 const fallbackGeo = new THREE.BoxGeometry();
 const fallbackMat = new THREE.MeshNormalMaterial();
 const cube = new THREE.Mesh(fallbackGeo, fallbackMat);
 scene.add(cube);
 
-/* 📦 GLTF */
-const loader = new THREE.GLTFLoader();
+/* 📦 OBJ LOADER */
+const loader = new THREE.OBJLoader();
 
 loader.load(
-  "3DModel.glb",
-  (gltf) => {
+  "3DModel.obj",
+  (object) => {
 
-    console.log("✔ MODEL LOADED");
+    console.log("✔ OBJ LOADED");
 
-    scene.remove(cube); // eltüntetjük fallbacket
+    scene.remove(cube);
 
-    const model = gltf.scene;
-
-    /* 🔧 középre + skála fix */
-    const box = new THREE.Box3().setFromObject(model);
+    /* középre igazítás */
+    const box = new THREE.Box3().setFromObject(object);
     const center = box.getCenter(new THREE.Vector3());
-    model.position.sub(center);
+    object.position.sub(center);
 
-    model.scale.set(1, 1, 1);
+    /* skála fix */
+    object.scale.set(1, 1, 1);
 
-    scene.add(model);
+    scene.add(object);
   },
   undefined,
   (err) => {
-    console.log("❌ MODEL ERROR:", err);
+    console.log("❌ OBJ ERROR:", err);
   }
 );
 
