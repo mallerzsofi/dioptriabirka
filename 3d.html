@@ -124,6 +124,11 @@ canvas {
   <div class="image-wrapper"><img src="12.JPG"></div>
   <div class="image-wrapper"><img src="7.JPG"></div>
 
+  <!-- 🔥 ÚJ 3 KÉP -->
+  <div class="image-wrapper"><img src="8.JPG"></div>
+  <div class="image-wrapper"><img src="10.JPG"></div>
+  <div class="image-wrapper"><img src="11.JPG"></div>
+
 </div>
 
 <!-- THREE.JS -->
@@ -164,7 +169,7 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D modell */
+/* 📦 3D model */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
@@ -210,7 +215,7 @@ window.addEventListener("resize", () => {
 });
 
 /* =========================
-   💰 ÁR RENDSZER (FIX 1 ÁR)
+   💰 ÁR RENDSZER
 ========================= */
 
 function randomPrice() {
