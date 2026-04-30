@@ -2,9 +2,100 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Főoldal</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: black;
+    }
+
+    /* 🎥 háttér videó */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* sötétítés (hogy olvasható legyen a szöveg) */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.35);
+      z-index: -1;
+    }
+
+    /* 🧠 cím */
+    .title {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: 700;
+      font-size: clamp(28px, 6vw, 64px);
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    /* 📌 menü */
+    .menu {
+      position: absolute;
+      bottom: 40px;
+      left: 20px;
+      font-size: clamp(16px, 3.5vw, 24px);
+    }
+
+    .menu a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* ki az? */
+    .ki-az {
+      position: absolute;
+      bottom: 40px;
+      right: 20px;
+      font-size: clamp(16px, 3.5vw, 24px);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* 🔥 kattintható overlay */
+    #click-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* biztos ami biztos mobilra */
+    @media (max-width: 600px) {
+      body {
+        overflow: hidden;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -17,7 +108,7 @@
 <!-- 🧠 cím -->
 <div class="title">dioptriabirka</div>
 
-<!-- 🔥 teljes képernyős kattintható réteg -->
+<!-- 🔥 kattintható réteg -->
 <div id="click-layer"></div>
 
 <!-- 📌 menü -->
