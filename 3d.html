@@ -22,7 +22,7 @@ body {
 
 canvas {
   display: block;
-  pointer-events: none;
+  pointer-events: auto; /* 🔥 EZ A FIX */
 }
 
 #menu {
@@ -125,10 +125,14 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(5,5,5);
 scene.add(light);
 
+/* 🎮 FORGATÁS */
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+controls.enableZoom = true;
+controls.enablePan = false;
+controls.rotateSpeed = 0.8;
 
-/* 🔥 EZ A LÉNYEG */
+/* MODEL */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
@@ -150,10 +154,10 @@ loader.load(
   undefined,
   (err) => {
     console.error("❌ NEM TÖLTŐDIK:", err);
-    alert("A 3D MODEL NEM TALÁLHATÓ");
   }
 );
 
+/* LOOP */
 function animate(){
   requestAnimationFrame(animate);
   controls.update();
@@ -161,11 +165,13 @@ function animate(){
 }
 animate();
 
+/* MENU */
 window.addEventListener("scroll", () => {
   const bottom = section.getBoundingClientRect().bottom;
   document.getElementById("menu").classList.toggle("show", bottom <= 0);
 });
 
+/* PRICE */
 function randomPrice() {
   const value = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
   return value.toLocaleString('hu-HU') + " ft";
