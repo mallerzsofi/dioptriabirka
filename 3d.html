@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>menü</title>
+<title>MENÜ</title>
 
 <style>
 body {
@@ -44,7 +44,6 @@ canvas {
   opacity: 0;
   transform: translateY(-100%);
   transition: 0.4s;
-
   z-index: 9999;
 }
 
@@ -116,9 +115,7 @@ canvas {
 <!-- 🖼 GALÉRIA -->
 <div id="gallery">
 
-  <!-- 🔁 CSERÉLVE: 5.JPG → 13.JPG -->
   <div class="image-wrapper"><img src="13.JPG"></div>
-
   <div class="image-wrapper"><img src="1.JPG"></div>
   <div class="image-wrapper"><img src="9.JPG"></div>
 
@@ -126,7 +123,6 @@ canvas {
   <div class="image-wrapper"><img src="12.JPG"></div>
   <div class="image-wrapper"><img src="7.JPG"></div>
 
-  <!-- 🔥 FIXELT SOR -->
   <div class="image-wrapper"><img src="8.JPG"></div>
   <div class="image-wrapper"><img src="2.JPG"></div>
   <div class="image-wrapper"><img src="11.JPG"></div>
@@ -144,6 +140,7 @@ canvas {
 const section = document.getElementById("three-section");
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff);
 
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -151,6 +148,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+
+camera.position.set(0, 1, 3);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -171,23 +170,41 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D modell */
+/* 📦 FALLBACK KOCKA (ha GLB nem jön be) */
+const fallbackGeo = new THREE.BoxGeometry();
+const fallbackMat = new THREE.MeshNormalMaterial();
+const cube = new THREE.Mesh(fallbackGeo, fallbackMat);
+scene.add(cube);
+
+/* 📦 GLTF */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
   "3DModel.glb",
   (gltf) => {
-    scene.add(gltf.scene);
+
+    console.log("✔ MODEL LOADED");
+
+    scene.remove(cube); // eltüntetjük fallbacket
+
+    const model = gltf.scene;
+
+    /* 🔧 középre + skála fix */
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    model.position.sub(center);
+
+    model.scale.set(1, 1, 1);
+
+    scene.add(model);
   },
   undefined,
   (err) => {
-    console.log("❌ 3D ERROR:", err);
+    console.log("❌ MODEL ERROR:", err);
   }
 );
 
-camera.position.z = 3;
-
-/* 🔄 render loop */
+/* 🔄 loop */
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -195,7 +212,7 @@ function animate() {
 }
 animate();
 
-/* 🟤 menu scroll */
+/* 🟤 menu */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
@@ -212,7 +229,6 @@ window.addEventListener("scroll", () => {
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
@@ -225,7 +241,6 @@ function randomPrice() {
   return value.toLocaleString('hu-HU') + " ft";
 }
 
-/* 🖱 click */
 document.querySelectorAll(".image-wrapper").forEach(wrapper => {
   wrapper.addEventListener("click", () => {
     const existing = wrapper.querySelector(".price");
