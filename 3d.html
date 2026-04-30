@@ -2,6 +2,8 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>3D + Galéria</title>
 
 <style>
@@ -9,19 +11,23 @@ body {
   margin: 0;
   font-family: Arial;
   background: white;
+  overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 /* 🟢 3D SZEKCIÓ */
 #three-section {
   position: relative;
   height: 100vh;
-  background: #ffffff;
+  height: 100svh;
   overflow: hidden;
 }
 
 /* 🎥 canvas */
 canvas {
   display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* 🟤 MENÜ */
@@ -31,11 +37,11 @@ canvas {
   left: 0;
   width: 100%;
 
-  padding: 15px 0;
+  padding: 12px 0;
   text-align: center;
 
   font-family: Impact, sans-serif;
-  font-size: 40px;
+  font-size: clamp(22px, 5vw, 40px);
   color: #C1900B;
 
   background: rgba(255,255,255,0.95);
@@ -54,17 +60,31 @@ canvas {
 
 /* 🖼 GALÉRIA */
 #gallery {
-  width: 90%;
+  width: 95%;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 50px 0;
+  padding: 40px 0;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
-/* 🔥 wrapper */
+/* 📱 TABLET */
+@media (max-width: 768px) {
+  #gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 📱 TELEFON */
+@media (max-width: 480px) {
+  #gallery {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* 🖼 képek */
 .image-wrapper {
   position: relative;
   cursor: pointer;
@@ -85,8 +105,7 @@ canvas {
   transform: translateX(-50%);
 
   font-family: Consolas, monospace;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
   color: #3179ac;
 
   pointer-events: none;
@@ -130,7 +149,7 @@ canvas {
 
 <script>
 
-/* 🎥 3D */
+/* 🎥 SCENE */
 const section = document.getElementById("three-section");
 
 const scene = new THREE.Scene();
@@ -142,12 +161,13 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0xffffff);
 section.appendChild(renderer.domElement);
 
-/* 💡 fény */
+/* 💡 fények */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -157,29 +177,32 @@ scene.add(light);
 /* 🎮 controls */
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+controls.enablePan = false;
+controls.enableZoom = true;
+controls.rotateSpeed = 0.5;
 
 /* 📦 modell */
 const loader = new THREE.GLTFLoader();
-loader.load("3DModel.obj.glb", (gltf) => {
+loader.load("3DModel.glb", (gltf) => {
   scene.add(gltf.scene);
 });
 
 camera.position.z = 3;
 
-/* 🟤 MENÜ */
+/* 🟤 MENÜ scroll trigger */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
-  const sectionBottom = section.getBoundingClientRect().bottom;
+  const bottom = section.getBoundingClientRect().bottom;
 
-  if (sectionBottom <= 0) {
+  if (bottom <= 0) {
     menu.classList.add("show");
   } else {
     menu.classList.remove("show");
   }
 });
 
-/* 🔄 render */
+/* 🔄 render loop */
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -187,14 +210,16 @@ function animate() {
 }
 animate();
 
-/* 📱 resize */
+/* 📱 resize fix */
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-/* 💰 RANDOM ÁR */
+/* 💰 random ár */
 function randomPrice() {
   const min = 60000;
   const max = 120000;
@@ -202,11 +227,9 @@ function randomPrice() {
   return value.toLocaleString('hu-HU') + " Ft";
 }
 
-/* 🖱 KATTINTÁS */
+/* 🖱 kattintás */
 document.querySelectorAll(".image-wrapper").forEach(wrapper => {
-
   wrapper.addEventListener("click", () => {
-
     const existing = wrapper.querySelector(".price");
 
     if (existing) {
@@ -215,12 +238,9 @@ document.querySelectorAll(".image-wrapper").forEach(wrapper => {
       const price = document.createElement("div");
       price.className = "price";
       price.innerText = randomPrice();
-
       wrapper.appendChild(price);
     }
-
   });
-
 });
 
 </script>
