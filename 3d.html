@@ -14,17 +14,20 @@ body {
   overflow-x: hidden;
 }
 
+/* 🟢 3D SZEKCIÓ */
 #three-section {
   position: relative;
   height: 100vh;
   overflow: hidden;
 }
 
+/* canvas */
 canvas {
   display: block;
   pointer-events: none;
 }
 
+/* 🟤 MENÜ */
 #menu {
   position: fixed;
   top: 0;
@@ -49,6 +52,7 @@ canvas {
   transform: translateY(0);
 }
 
+/* 🖼 GALÉRIA */
 #gallery {
   width: 95%;
   max-width: 1000px;
@@ -72,14 +76,17 @@ canvas {
   display: block;
 }
 
+/* 💰 ár */
 .price {
   position: absolute;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: Consolas;
+
+  font-family: Consolas, monospace;
   font-size: 14px;
   font-weight: 700;
+
   color: #3179ac;
   pointer-events: none;
 }
@@ -92,6 +99,7 @@ canvas {
 
 <div id="three-section"></div>
 
+<!-- 🖼 GALÉRIA -->
 <div id="gallery">
 
   <div class="image-wrapper"><img src="13.JPG"></div>
@@ -120,10 +128,20 @@ const section = document.getElementById("three-section");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
 camera.position.set(0, 1, 3);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 section.appendChild(renderer.domElement);
 
@@ -138,14 +156,7 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* FALLBACK */
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(),
-  new THREE.MeshNormalMaterial()
-);
-scene.add(cube);
-
-/* GLB LOADER */
+/* GLB LOADER (NO FALLBACK) */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
@@ -153,8 +164,6 @@ loader.load(
   (gltf) => {
 
     console.log("✔ GLB LOADED");
-
-    scene.remove(cube);
 
     const model = gltf.scene;
 
