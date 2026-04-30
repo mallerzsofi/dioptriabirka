@@ -21,10 +21,10 @@ body {
   overflow: hidden;
 }
 
-/* 🔥 canvas FIX (EZ VOLT A HIBA 1) */
+/* canvas */
 canvas {
   display: block;
-  pointer-events: none; /* 👉 EZ ENGEDI A KATTINTÁST ALÁ */
+  pointer-events: none;
 }
 
 /* 🟤 MENÜ */
@@ -53,7 +53,7 @@ canvas {
   transform: translateY(0);
 }
 
-/* 🖼 GALÉRIA (FIX GRID BIZTONSÁG) */
+/* 🖼 GALÉRIA */
 #gallery {
   width: 95%;
   max-width: 1000px;
@@ -83,13 +83,16 @@ canvas {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: Consolas;
+
+  font-family: Consolas, monospace;
   font-size: 14px;
+  font-weight: 700;
+
   color: #3179ac;
   pointer-events: none;
 }
 
-/* 📱 responsive (nem kötelező, de nem törik szét) */
+/* 📱 responsive */
 @media (max-width: 768px) {
   #gallery {
     grid-template-columns: repeat(2, 1fr);
@@ -150,7 +153,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 section.appendChild(renderer.domElement);
 
-/* 💡 light */
+/* 💡 fény */
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -161,7 +164,7 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 model */
+/* 📦 3D model */
 const loader = new THREE.GLTFLoader();
 
 loader.load(
@@ -177,7 +180,7 @@ loader.load(
 
 camera.position.z = 3;
 
-/* 🔄 loop */
+/* 🔄 render loop */
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -185,7 +188,7 @@ function animate() {
 }
 animate();
 
-/* 🟤 menu trigger */
+/* 🟤 MENU scroll */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
@@ -206,7 +209,25 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/* 💰 ár kattintás */
+/* =========================
+   💰 ÁR RENDSZER
+========================= */
+
+function formatPrice(num) {
+  return num.toLocaleString('hu-HU') + " ft";
+}
+
+function randomPriceRange() {
+  const min = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+  const max = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+
+  const low = Math.min(min, max);
+  const high = Math.max(min, max);
+
+  return `${formatPrice(low)} - ${formatPrice(high)}`;
+}
+
+/* 🖱 click price */
 document.querySelectorAll(".image-wrapper").forEach(wrapper => {
   wrapper.addEventListener("click", () => {
     const existing = wrapper.querySelector(".price");
@@ -216,7 +237,7 @@ document.querySelectorAll(".image-wrapper").forEach(wrapper => {
     } else {
       const price = document.createElement("div");
       price.className = "price";
-      price.innerText = Math.floor(Math.random() * 60000 + 60000) + " Ft";
+      price.innerText = randomPriceRange();
       wrapper.appendChild(price);
     }
   });
