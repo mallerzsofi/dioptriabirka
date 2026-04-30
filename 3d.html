@@ -64,57 +64,73 @@ canvas {
   gap: 10px;
 }
 
-#gallery img {
+/* 🔥 wrapper */
+.image-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.image-wrapper img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
+}
+
+/* 💰 ár */
+.price {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  color: #00ff14;
+
+  pointer-events: none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🟤 MENÜ -->
 <div id="menu">MENÜ</div>
 
-<!-- 🎥 3D -->
 <div id="three-section"></div>
 
 <!-- 🖼 GALÉRIA -->
 <div id="gallery">
 
-  <img src="5.JPG" onerror="this.style.display='none'">
-  <img src="1.JPG" onerror="this.style.display='none'">
-  <img src="9.JPG" onerror="this.style.display='none'">
+  <div class="image-wrapper"><img src="5.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="1.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="9.JPG" onerror="this.style.display='none'"></div>
 
-  <img src="3.JPG" onerror="this.style.display='none'">
-  <img src="12.JPG" onerror="this.style.display='none'">
-  <img src="7.JPG" onerror="this.style.display='none'">
+  <div class="image-wrapper"><img src="3.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="12.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="7.JPG" onerror="this.style.display='none'"></div>
 
-  <img src="14.JPG" onerror="this.style.display='none'">
-  <img src="2.JPG" onerror="this.style.display='none'">
-  <img src="10.JPG" onerror="this.style.display='none'">
+  <div class="image-wrapper"><img src="14.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="2.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="10.JPG" onerror="this.style.display='none'"></div>
 
-  <img src="6.JPG" onerror="this.style.display='none'">
-  <img src="11.JPG" onerror="this.style.display='none'">
-  <img src="13.JPG" onerror="this.style.display='none'">
+  <div class="image-wrapper"><img src="6.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="11.JPG" onerror="this.style.display='none'"></div>
+  <div class="image-wrapper"><img src="13.JPG" onerror="this.style.display='none'"></div>
 
-  <!-- ➕ EXTRA KÉP -->
-  <img src="4.JPG" onerror="this.style.display='none'">
+  <div class="image-wrapper"><img src="4.JPG" onerror="this.style.display='none'"></div>
 
 </div>
 
-<!-- 📦 THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
 
+/* 🎥 3D */
 const section = document.getElementById("three-section");
 
-/* 🎥 renderer */
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
@@ -140,17 +156,15 @@ scene.add(light);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-/* 📦 3D modell */
+/* 📦 modell */
 const loader = new THREE.GLTFLoader();
-
-loader.load("3DModel.obj.glb", function (gltf) {
+loader.load("3DModel.obj.glb", (gltf) => {
   scene.add(gltf.scene);
 });
 
-/* 📷 kamera */
 camera.position.z = 3;
 
-/* 🔥 MENÜ LOGIKA */
+/* 🟤 MENÜ */
 const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", () => {
@@ -163,14 +177,12 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/* 🔄 loop */
+/* 🔄 render */
 function animate() {
   requestAnimationFrame(animate);
-
   controls.update();
   renderer.render(scene, camera);
 }
-
 animate();
 
 /* 📱 resize */
@@ -178,6 +190,35 @@ window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* 💰 RANDOM ÁR */
+function randomPrice() {
+  const min = 60000;
+  const max = 120000;
+  const value = Math.floor(Math.random() * (max - min + 1)) + min;
+  return value.toLocaleString('hu-HU') + " Ft";
+}
+
+/* 🖱 KATTINTÁS */
+document.querySelectorAll(".image-wrapper").forEach(wrapper => {
+
+  wrapper.addEventListener("click", () => {
+
+    const existing = wrapper.querySelector(".price");
+
+    if (existing) {
+      existing.remove();
+    } else {
+      const price = document.createElement("div");
+      price.className = "price";
+      price.innerText = randomPrice();
+
+      wrapper.appendChild(price);
+    }
+
+  });
+
 });
 
 </script>
