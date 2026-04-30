@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>3D + Galéria</title>
+<title>MENÜ</title>
 
 <style>
 body {
@@ -90,19 +90,6 @@ canvas {
   color: #3179ac;
   pointer-events: none;
 }
-
-/* 📱 responsive */
-@media (max-width: 768px) {
-  #gallery {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  #gallery {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
 </style>
 </head>
 
@@ -187,17 +174,17 @@ loader.load(
 
     scene.remove(cube);
 
-    /* középre igazítás */
     const box = new THREE.Box3().setFromObject(object);
     const center = box.getCenter(new THREE.Vector3());
     object.position.sub(center);
 
-    /* skála fix */
     object.scale.set(1, 1, 1);
 
     scene.add(object);
   },
-  undefined,
+  (xhr) => {
+    console.log("⏳ LOADING:", (xhr.loaded / xhr.total * 100).toFixed(1) + "%");
+  },
   (err) => {
     console.log("❌ OBJ ERROR:", err);
   }
@@ -231,10 +218,7 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-/* =========================
-   💰 ÁR RENDSZER
-========================= */
-
+/* 💰 ár */
 function randomPrice() {
   const value = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
   return value.toLocaleString('hu-HU') + " ft";
